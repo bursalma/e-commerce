@@ -3,7 +3,7 @@ import 'firebase/firestore';
 import 'firebase/auth';
 
 const config = {
-    apiKey: "AIzaSyAH6ExQjmegRA09DSpjjef1tAbisa2Op0k",
+    apiKey:  process.env.REACT_APP_API_KEY,
     authDomain: "e-commerce-d-b.firebaseapp.com",
     databaseURL: "https://e-commerce-d-b.firebaseio.com",
     projectId: "e-commerce-d-b",
@@ -11,7 +11,7 @@ const config = {
     messagingSenderId: "486843352715",
     appId: "1:486843352715:web:4b017fbbefc4d84e3cb68e"
 }
-
+console.log(process.env.API_KEY)
 firebase.initializeApp(config);
 
 export const auth = firebase.auth();
