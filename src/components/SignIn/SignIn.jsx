@@ -1,10 +1,10 @@
 import React from "react";
 import "./SignIn.scss";
 
-import FormInput from '../FormInput/FormInput'
-import Button from '../Button/Button'
+import FormInput from '../FormInput/FormInput';
+import Button from '../Button/Button';
 
-import { signInWithGoogle } from '../../firebase/firebase'
+import { auth, signInWithGoogle } from '../../firebase/firebase';
 
 class SignIn extends React.Component {
   constructor(props) {
@@ -16,17 +16,25 @@ class SignIn extends React.Component {
     };
   }
 
-  handleSubmit = event => {
+  handleSubmit = async event => {
     event.preventDefault();
 
-    this.setState({ 
-        email: '', 
-        password: ''
-    });
+    const { email, password } = this.state;
+
+    try {
+        await auth.signInWithEmailAndPassword(email, password);
+
+        this.setState({ 
+            email: '', 
+            password: ''
+        });
+    } catch (error) {
+        console.error(error);
+    }
   }
 
   handleChange = event => {
-      const { value, name } = event.target;
+      const { name, value } = event.target;
 
       this.setState({ [name]: value });
   }
@@ -34,7 +42,7 @@ class SignIn extends React.Component {
   render() {
     return (
       <div className="SignIn">
-        <h2>I already have an account</h2>
+        <h2 className='title'>I already have an account</h2>
         <span>Sign in with your email and password</span>
         <form onSubmit={this.handleSubmit}>
             <FormInput 
@@ -42,7 +50,7 @@ class SignIn extends React.Component {
                 type="email" 
                 value={this.state.email} 
                 handleChange={this.handleChange}
-                label='email'
+                label='Email'
                 required 
             />
             <FormInput
@@ -50,12 +58,13 @@ class SignIn extends React.Component {
                 type="password"
                 value={this.state.password}
                 handleChange={this.handleChange}
-                label='password'
+                label='Password'
                 required
             />
             <div className='buttons'>
-              <Button type="submit"> Sign In </Button>
+              <Button type='submit'> Sign In </Button>
               <Button 
+                type='button'
                 onClick={signInWithGoogle}
                 isGoogleSignIn
               >
