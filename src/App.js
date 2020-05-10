@@ -1,40 +1,35 @@
 import React from 'react';
 import { Route, Switch } from 'react-router-dom';
+import { connect } from 'react-redux';
 import './App.css';
 
-import Homepage from './pages/Homepage/Homepage'
-import Shop from './pages/Shop/Shop'
-import Sign from './pages/Sign/Sign'
-import Header from './components/Header/Header'
-import { auth, createUserProfileDocument } from './firebase/firebase'
+import Homepage from './pages/Homepage/Homepage';
+import Shop from './pages/Shop/Shop';
+import Sign from './pages/Sign/Sign';
+import Header from './components/Header/Header';
+import { auth, createUserProfileDocument } from './firebase/firebase';
+import { SET_CURRENT_USER } from './redux/user/userActions';
 
 class App extends React.Component {
-  constructor() {
-    super();
-    
-    this.state = {
-      currentUser: null
-    }
-  }
 
   unsubscribeFromAuth =  null
   
   componentDidMount() {
+    const { SET_CURRENT_USER } = this.props;
+
     this.unsubscribeFromAuth = auth.onAuthStateChanged(async userAuth => { 
       if (userAuth) {
         const userRef = await createUserProfileDocument(userAuth);
 
         userRef.onSnapshot(snapShot => {
-          this.setState({
-            currentUser: {
-              id: snapShot.id,
-              ...snapShot.data()
-            }
+          SET_CURRENT_USER({
+            id: snapShot.id,
+            ...snapShot.data()
           });
         });
       }
 
-      this.setState({currentUser: userAuth})
+      SET_CURRENT_USER(userAuth);
     });
   }
 
@@ -45,7 +40,7 @@ class App extends React.Component {
   render() {
     return (
       <div>
-        <Header currentUser={ this.state.currentUser }/>
+        <Header />
         <Switch>
           <Route exact path='/' component={Homepage} />
           <Route path='/shop' component={Shop} />
@@ -56,4 +51,8 @@ class App extends React.Component {
   }
 }
 
-export default App;
+const mapDispatchToProps = dispatch => ({
+  SET_CURRENT_USER: user => dispatch(SET_CURRENT_USER(user))
+});
+
+export default connect(null, mapDispatchToProps)(App);
