@@ -8,28 +8,28 @@ import Shop from './pages/Shop/Shop';
 import Sign from './pages/Sign/Sign';
 import Header from './components/Header/Header';
 import { auth, createUserProfileDocument } from './firebase/firebase';
-import { SET_CURRENT_USER } from './redux/user/userActions';
+import { setCurrentUser } from './redux/user/userActions';
 
 class App extends React.Component {
 
   unsubscribeFromAuth =  null
   
   componentDidMount() {
-    const { SET_CURRENT_USER } = this.props;
+    const { setCurrentUser } = this.props;
 
     this.unsubscribeFromAuth = auth.onAuthStateChanged(async userAuth => { 
       if (userAuth) {
         const userRef = await createUserProfileDocument(userAuth);
 
         userRef.onSnapshot(snapShot => {
-          SET_CURRENT_USER({
+          setCurrentUser({
             id: snapShot.id,
             ...snapShot.data()
           });
         });
       }
 
-      SET_CURRENT_USER(userAuth);
+      setCurrentUser(userAuth);
     });
   }
 
@@ -65,7 +65,7 @@ const mapStateToProps = ({ user }) => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  SET_CURRENT_USER: user => dispatch(SET_CURRENT_USER(user))
+  setCurrentUser: user => dispatch(setCurrentUser(user))
 });
 
 export default connect(
