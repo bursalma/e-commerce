@@ -1,7 +1,7 @@
 import React from 'react';
 import './Shop.scss'
 
-import ShopData from './ShopData'
+import SHOP_DATA from './shopData'
 import CollectionPreview from '../../components/CollectionPreview/CollectionPreview'
 
 class Shop extends React.Component {
@@ -9,7 +9,7 @@ class Shop extends React.Component {
         super(props);
 
         this.state = {
-            collections: ShopData
+            collections: SHOP_DATA
         }
     }
 
