@@ -6,8 +6,11 @@ import './App.css';
 
 import Homepage from './pages/Homepage/Homepage';
 import Shop from './pages/Shop/Shop';
+import Checkout from './pages/Checkout/Checkout';
 import Sign from './pages/Sign/Sign';
+
 import Header from './components/Header/Header';
+
 import { auth, createUserProfileDocument } from './firebase/firebase';
 import { setCurrentUser } from './redux/user/userActions';
 import { selectCurrentUser } from './redux/user/userSelectors';
@@ -46,6 +49,7 @@ class App extends React.Component {
         <Switch>
           <Route exact path='/' component={Homepage} />
           <Route path='/shop' component={Shop} />
+          <Route exact path='/checkout' component={Checkout} />
           <Route 
             exact path='/signin' 
             render={() =>
@@ -56,6 +60,7 @@ class App extends React.Component {
               )
             } 
           />
+          
         </Switch>
       </div>
     );
