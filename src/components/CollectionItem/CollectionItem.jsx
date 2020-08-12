@@ -4,7 +4,7 @@ import './CollectionItem.scss';
 
 import Button from '../Button/Button';
 
-import { addItem } from '../../redux/cart/cartActions'
+import { addItemToCart } from '../../redux/cart/cartActions'
 
 const CollectionItem = ({ item, addItem }) => {
   const {name, imageUrl, price} = item;
@@ -29,7 +29,7 @@ const CollectionItem = ({ item, addItem }) => {
 }
 
 const mapDispatchToProps = dispatch => ({
-  addItem: item => dispatch(addItem(item))
+  addItem: item => dispatch(addItemToCart(item))
 })
 
 export default connect(
